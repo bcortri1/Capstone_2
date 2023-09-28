@@ -1,0 +1,58 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "title": "Root Schema",
+    "type": "object",
+    "default": {},
+    "required": [
+        "username",
+        "old password",
+        "new password",
+        "admin"
+    ],
+    "properties": {
+        "username": {
+            "title": "The username Schema",
+            "type": "string",
+            "minLength":3,
+            "default": "",
+            "examples": [
+                "bill"
+            ]
+        },
+        "old_password": {
+            "title": "The old password Schema",
+            "type": "string",
+            "minLength":8,
+            "default": "",
+            "examples": [
+                "password"
+            ]
+        },
+        "new_password": {
+            "title": "The new password Schema",
+            "type": "string",
+            "minLength":8,
+            "default": "",
+            "examples": [
+                "password1"
+            ]
+        },
+        "admin": {
+            "title": "The admin Schema",
+            "type": "integer",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "examples": [
+                0
+            ]
+        }
+    },
+    "examples": [{
+        "username": "bill",
+        "old password": "password",
+        "new password": "password1",
+        "admin": 0
+    }]
+}

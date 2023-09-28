@@ -1,0 +1,46 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "title": "Root Schema",
+    "type": "object",
+    "default": {},
+    "required": [
+        "username",
+        "password",
+        "admin"
+    ],
+    "properties": {
+        "username": {
+            "title": "The username Schema",
+            "type": "string",
+            "minLength":3,
+            "default": "",
+            "examples": [
+                "bill"
+            ]
+        },
+        "password": {
+            "title": "The password Schema",
+            "type": "string",
+            "default": "",
+            "examples": [
+                "password"
+            ]
+        },
+        "admin": {
+            "title": "The admin Schema",
+            "type": "integer",
+            "default": 0,
+            "minimum": 0,
+            "maximum": 1,
+            "examples": [
+                0
+            ]
+        }
+    },
+    "examples": [{
+        "username": "bill",
+        "password": "password",
+        "admin": 0
+    }]
+}
