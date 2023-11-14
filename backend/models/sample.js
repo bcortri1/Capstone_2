@@ -1,44 +1,67 @@
-const db  = require("../db/db.js");
+const db = require("../db/db.js");
 
 //Database sample functions
 class Sample {
-    //CREATE A SONG
-    static create(title, data, author) {
-        const duplicateCheck = db.prepare(
-            `SELECT title
-                 FROM songs
-                 WHERE author = $1`
-        ).get(author);
+
+    //CREATE A SAMPLE
+    static create({name, sound, pitch, octave, username}) {
+        const duplicateCheck = db.prepare(`
+            SELECT name
+            FROM samples
+            WHERE user = ? AND name = ?`
+        ).get(username, name);
 
         if (duplicateCheck) {
-            throw new Error("Duplicate Found")
+            throw new Error("Duplicate Found");
         }
         else {
-            db.prepare(
-                `INSERT INTO songs
-                    (title, data, author)
-                    VALUES($1, $2, $3)`
-            ).get(title, data, author)
+            const sample = db.prepare(`
+                INSERT INTO samples (name, sound, pitch, octave, user)
+                VALUES(?, ?, ?, ?, ?)
+                RETURNING name, sound, pitch, octave, user`
+            ).get(name, sound, pitch, octave, username);
+            return sample;
         }
     }
-    //GET SPECIFIED SONG
-    static get(title, author) {
-        const song = db.prepare(
-            `SELECT *
-                 FROM songs
-                 WHERE title = $1 AND author = $2`
-        ).get(title, author);
 
-        return song;
+    //GET SPECIFIED SAMPLE
+    static get({name, username}) {
+        const sample = db.prepare(`
+            SELECT *
+            FROM samples
+            WHERE name = ? AND user = ?`
+        ).get(name, username);
+        return sample;
     }
-    //GET ALL SONGS
-    static getAll(author) {
-        const songs = db.prepare(
-            `SELECT *
-                 FROM songs
-                 WHERE author = $1`
-        ).all(author);
-        return songs;
+
+    //GET ALL SAMPLES FROM A USER
+    static getAll(username) {
+        const samples = db.prepare(`
+            SELECT *
+            FROM samples
+            WHERE user = ?`
+        ).all(username);
+        return samples;
+    }
+
+    //UNUSED
+    // //UPDATE SPECIFIC SAMPLE
+    // static update({name, sound, username}) {
+    //     const sample = db.prepare(`
+    //         UPDATE samples
+    //         SET name = ?, sound = ?, 
+    //         WHERE user = ?`
+    //     ).get(name, sound, username);
+    //     return sample;
+    // }
+
+    //DELETE SPECIFIC SAMPLE
+    static delete({name, username}) {
+        db.prepare(`
+                DELETE FROM samples
+                WHERE name = ? AND user = ?`
+        ).run(name, username);
+        return { message: "sample deleted" };
     }
 }
 

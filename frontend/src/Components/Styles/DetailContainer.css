@@ -1,0 +1,9 @@
+.DetailContainer {
+    display: inline-block;
+    background-color: black;
+    z-index: 200;
+    width: 25dvw;
+    height: 90dvh;
+    margin: 5px;
+    min-width: 265px;
+}

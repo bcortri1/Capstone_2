@@ -1,0 +1,23 @@
+.SampleCard {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    margin-bottom: 10px;
+    width: 50%;
+}
+
+.SampleCard .row {
+    justify-content: center;
+}
+
+.SampleCard .col {
+    margin: auto;
+}
+
+.SampleCard .card {
+    min-width: 30dvw;
+}
+
+.SampleCard button {
+    float: right;
+}

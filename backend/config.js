@@ -1,6 +1,6 @@
 require("dotenv"); // FOR BCYRPT SECRET KEY
 require("colors")
-let ENVIRONMENT =  'test';
+let ENVIRONMENT =  'test'; //DOT ENV FOR variable
 
 function getDatabase(){
     return (ENVIRONMENT === "test") 

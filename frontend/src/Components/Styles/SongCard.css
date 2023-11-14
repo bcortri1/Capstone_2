@@ -1,0 +1,24 @@
+.SongCard {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 50%;
+}
+
+.SongCard .row {
+    justify-content: center;
+}
+
+.SongCard .col {
+    margin: auto;
+}
+
+.SongCard .card {
+    min-width: 30dvw;
+}
+
+.SongCard button {
+    float: right;
+}

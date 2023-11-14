@@ -12,35 +12,22 @@
         "username": {
             "title": "The username Schema",
             "type": "string",
-            "minLength":3,
             "default": "",
             "examples": [
-                "bill"
+                "user"
             ]
         },
         "password": {
-            "title": "The new password Schema",
+            "title": "The password Schema",
             "type": "string",
-            "minLength":4,
             "default": "",
             "examples": [
-                "password1"
-            ]
-        },
-        "admin": {
-            "title": "The admin Schema",
-            "type": "integer",
-            "default": 0,
-            "minimum": 0,
-            "maximum": 1,
-            "examples": [
-                0
+                "pass"
             ]
         }
     },
     "examples": [{
-        "username": "bill",
-        "password": "password1",
-        "admin": 0
+        "username": "user",
+        "password": "pass"
     }]
 }

@@ -7,7 +7,9 @@
     "required": [
         "name",
         "sound",
-        "user"
+        "username",
+        "pitch",
+        "octave"
     ],
     "properties": {
         "name": {
@@ -21,19 +23,36 @@
         },
         "sound": {
             "title": "The sound Schema",
-            "type": "array",
             "default": [],
             "items": {},
             "examples": [
                 []
             ]
         },
-        "user": {
+        "username": {
             "title": "The user Schema",
             "type": "string",
             "default": "",
             "examples": [
                 "bill"
+            ]
+        },
+        "pitch": {
+            "title": "The pitch Schema",
+            "type": "string",
+            "default": "",
+            "examples": [
+                "C"
+            ]
+        },
+        "octave": {
+            "title": "The octave Schema",
+            "type": "number",
+            "default": 1,
+            "maximum": 10,
+            "minimum": 0,
+            "examples": [
+                1,2,3
             ]
         }
     },

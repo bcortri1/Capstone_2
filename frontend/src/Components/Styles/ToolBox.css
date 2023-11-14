@@ -1,0 +1,35 @@
+.ToolBox {
+    display: inline-block;
+    color: #FBFAF8;
+    padding: '2px';
+    width: 100%;
+    vertical-align: top;
+}
+
+.ToolBox button {
+    color: #FBFAF8;
+    margin: 5px;
+    font-size: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.ToolBox .tool-btn {
+    background-color: gray;
+}
+
+.ToolBox .btn-group {
+    display: inline-block;
+    border: 1px #FBFAF8 solid;
+    margin: 3px;
+}
+
+.ToolBox #save-btn-group {
+    float: right;
+}
+
+.ToolBox #save-btn-group button {
+    background-color: gray;
+}

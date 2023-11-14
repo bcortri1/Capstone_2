@@ -1,0 +1,33 @@
+.MusicBlock {
+    font-size: 20px;
+    width: 30px;
+    height: 30px;
+    max-width: 30px;
+    max-height: 30px;
+    color: #FBFAF8;
+    border: 1px transparent solid;
+    text-align: center;
+    vertical-align: middle;
+    background-color: transparent;
+    overflow: visible !important;
+    box-sizing: content-box;
+}
+
+.created {
+    background-color: gray;
+}
+
+.created:hover {
+    border: 1px rgba(0, 0, 0, 0.600) solid !important;
+}
+
+.selected {
+    background-color: #FBFAF8 !important;
+    color: black !important;
+    box-shadow: 0px 0px 5px 1px #FBFAF8;
+}
+
+.start.created {
+    background-color: green !important;
+    color: #FBFAF8 !important;
+}

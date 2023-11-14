@@ -6,11 +6,13 @@ const Song = require("../models/song");
 const { BadRequestError } = require("../expressError");
 const songNewSchema = require("../schemas/songNew.json");
 const songUpdateSchema = require("../schemas/songUpdate.json");
+const {ensureAuth, userMatch} = require("../middleware/auth");
 
-const router = express.router({mergeParams: true});
+const router = express.Router({mergeParams: true});
 
 //ADD A SONG
-router.post("/", userMatch, async function (req, res, next) {
+//{title, data, username} => { ...song }
+router.post("/:username", userMatch, async function (req, res, next) {
     try {
         const validator = jsonschema.validate(req.body, songNewSchema);
         if (!validator.valid) {
@@ -18,6 +20,7 @@ router.post("/", userMatch, async function (req, res, next) {
             throw new BadRequestError(errs);
         }
         //CREATE SONG HERE
+        return res.json(await Song.create(req.body));
     }
     catch (err) {
         return next(err);
@@ -25,15 +28,12 @@ router.post("/", userMatch, async function (req, res, next) {
 
 });
 
-//GET ALL SONGS
-router.get("/", ensureAuth, async function (req, res, next) {
-    try {
-        const validator = jsonschema.validate(req.body, songNewSchema);
-        if (!validator.valid) {
-            const errs = validator.errors.map(e => e.stack);
-            throw new BadRequestError(errs);
-        }
+//GET ALL SONGS FOR USER
+//{username} => { ...songs }
+router.get("/:username", ensureAuth, async function (req, res, next) {
+    try{    
         //GET ALL SONGS HERE
+        return res.json(await Song.getAll(req.params.username));
     }
     catch (err) {
         return next(err);
@@ -41,7 +41,8 @@ router.get("/", ensureAuth, async function (req, res, next) {
 });
 
 //GET SPECIFIC SONG
-router.get("/:id", userMatch, async function (req, res, next) {
+//{title, data, username} => { ...song }
+router.post("/:username", userMatch, async function (req, res, next) {
     try {
         const validator = jsonschema.validate(req.body, songNewSchema);
         if (!validator.valid) {
@@ -49,6 +50,7 @@ router.get("/:id", userMatch, async function (req, res, next) {
             throw new BadRequestError(errs);
         }
         //GET SONG HERE
+        return res.json(await Song.get(req.body));
     }
     catch (err) {
         return next(err);
@@ -56,7 +58,8 @@ router.get("/:id", userMatch, async function (req, res, next) {
 });
 
 //UPDATE A SONG
-router.patch("/:id", userMatch, async function (req, res, next) {
+//{title, data, username} => { ...song }
+router.patch("/:username", userMatch, async function (req, res, next) {
     try {
         const validator = jsonschema.validate(req.body, songUpdateSchema);
         if (!validator.valid) {
@@ -64,6 +67,7 @@ router.patch("/:id", userMatch, async function (req, res, next) {
             throw new BadRequestError(errs);
         }
         //UPDATE SONG HERE
+        return res.json(await Song.update(req.body));
     }
     catch (err) {
         return next(err);
@@ -72,12 +76,16 @@ router.patch("/:id", userMatch, async function (req, res, next) {
 });
 
 //DELETE A SONG
-router.delete("/", ensureAuth, async function (req, res, next) {
+//{title, username} => { message: "song deleted" }
+router.delete("/:username", ensureAuth, async function (req, res, next) {
     try {
         //DELETE SONG HERE
+        return res.json(await Song.delete(req.body));
     }
     catch (err) {
         return next(err);
     }
 
 });
+
+module.exports = router;

@@ -1,0 +1,28 @@
+.SampleForm {
+    display: flex;
+    justify-content: center;
+    margin: 10%;
+}
+
+.SampleForm input {
+    margin-bottom: 2px;
+    margin-top: 2px;
+}
+
+.SampleForm input::placeholder {
+    color: white;
+}
+
+.SampleForm form {
+    margin: auto;
+}
+
+.SampleForm button {
+    float: right;
+}
+
+.SampleForm .card-title {
+    font-size: larger;
+    font-weight: bold;
+    text-align: center;
+}

@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../config");
 const { UnauthorizedError } = require("../expressError");
 
-
 function authenticateJWT(req, res, next) {
     try {
         const authHeader = req.headers && req.headers.authorization;
@@ -16,11 +15,10 @@ function authenticateJWT(req, res, next) {
     }
 }
 
-
-
 function ensureAuth(req, res, next) {
     try {
         const user = res.locals.user;
+        console.debug("ENSURE AUTH LOCALS:", res.locals.user)
         if (!(user && (user.isAdmin || user.username === req.params.username))) {
             throw new UnauthorizedError();
         }
@@ -30,7 +28,22 @@ function ensureAuth(req, res, next) {
     }
 }
 
+function userMatch(req, res, next){
+    try {
+        const user = res.locals.user;
+        console.debug("USER MATCH LOCALS:", res.locals.user)
+        if (!(user.username === req.params.username)) {
+            throw new UnauthorizedError();
+        }
+        return next();
+    } catch (err) {
+        return next(err);
+    }
+}
+
+
 module.exports = {
     authenticateJWT,
-    ensureAuth
+    ensureAuth,
+    userMatch
 }
