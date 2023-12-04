@@ -11,7 +11,7 @@ class playBuffer {
     add(player, delay = 0) {
         this.playArr.push(player)
         this.delay += delay;
-        console.debug("buffer",this.playArr)
+        //console.debug("buffer",this.playArr)
     }
     //Resets buffer
     //playBuffers arent reused, so code this piece of code is unecessary in current iteration

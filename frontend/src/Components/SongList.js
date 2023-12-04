@@ -4,7 +4,7 @@ import SongCard from "./SongCard";
 import "./Styles/SongList.css"
 
 
-const SongList = ({ setSongs, songs, loading=true, currUser }) => {
+const SongList = ({ setSongs, songs, loading=true, currUser, setSave }) => {
 
     const removeSong = async (title) => {
         MusicProcApi.deleteSong(title, currUser);
@@ -21,7 +21,7 @@ const SongList = ({ setSongs, songs, loading=true, currUser }) => {
     return (
         <div className="SongList">
             {songs.map((song) => {
-                return <SongCard key={song.title +"-song-card"} title={song.title} data={song.data} remove={removeSong} />
+                return <SongCard key={song.title +"-song-card"} title={song.title} data={song.data} remove={removeSong} setSave={setSave} />
             })}
         </div>
     );

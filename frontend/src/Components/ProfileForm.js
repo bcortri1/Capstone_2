@@ -7,6 +7,7 @@ const ProfileForm = ({ editUser, currUser }) => {
     const [formData, setFormData] = useState(initialState);
 
     const handleChange = (evt) => {
+        evt.preventDefault();
         const { name, value } = evt.target;
         setFormData((data) => ({
             ...data,

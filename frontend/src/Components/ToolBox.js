@@ -3,7 +3,7 @@ import { Button, ButtonGroup } from "reactstrap";
 import "./Styles/ToolBox.css"
 
 
-const ToolBox = ({ toolChange, tool, togglePlaying, playing }) => {
+const ToolBox = ({ toolChange, tool, togglePlaying, playing, saveSong }) => {
 
     const handleTool = (evt) => {
         evt.preventDefault();
@@ -12,6 +12,7 @@ const ToolBox = ({ toolChange, tool, togglePlaying, playing }) => {
 
     const handleSave = (evt) => {
         console.log("Saving")
+        saveSong();
     }
 
     return (

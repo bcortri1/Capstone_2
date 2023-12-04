@@ -2,33 +2,33 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./Styles/MusicBlock.css";
 
 //UI representation of Music Block, handles interation with it
-const MusicBlock = ({ id, tool, setSelected, selected, saved = null, updateStart, addPath, removePath }) => {
-    const elRef = useRef(null);
+const MusicBlock = ({ id, tool, setSelected, selected, save = null, updateStart, addPath, removePath }) => {
     const initialState = {
         id: id,
         created: false,
         sample: "Synth",
         length: 1.0,
         notes: [],
-        prevBlock: [], //needs to be an array
-        nextBlocks: [], //needs to be an arr
+        prevBlock: [], 
+        nextBlocks: [], 
         start: false
     }
 
-    const [values, setValues] = useState(saved || initialState);
+    const [values, setValues] = useState(save || initialState);
     const [symbol, setSymbol] = useState('\u{2311}');
     const [classes, setClasses] = useState("MusicBlock");
-    //const [paths, setPaths] = useState([]);
+
+
 
     //Updates selected to null
     const nullSelected = () => {
-        setSelected(() => ({ setValues: null, values: null, el: null }));
+        setSelected(() => ({ setValues: null, values: null}));
     }
 
     //Updates selected to current MusicBlock, also can take obj val to be changed
     const updateSelected = useCallback((obj = null) => {
         let val = { ...values, ...obj };
-        setSelected(() => ({ setValues, values: val, el: elRef.current }));
+        setSelected(() => ({ setValues, values: val}));
     },[values, setSelected])
 
     //Resets all MusicBlock values, except for prev and next
@@ -58,6 +58,18 @@ const MusicBlock = ({ id, tool, setSelected, selected, saved = null, updateStart
         });
     }
 
+    //An attempt at fixing saved values via DOM
+    // const loadPrev = () => {
+    //     setValues((vals) => {
+    //         vals.prevBlock.forEach((obj) =>{
+    //             let el = document.getElementById(obj.values.id);
+    //             let 
+    //         })
+    //         let prevBlock = [...vals.prevBlock, selected];
+    //         return { ...vals, prevBlock };
+    //     });
+    // }
+
     //Removes previous block to clicked music block
     const removePrev = () => {
         setValues((vals) => {
@@ -66,7 +78,10 @@ const MusicBlock = ({ id, tool, setSelected, selected, saved = null, updateStart
         });
     }
 
+    //Updates values of previous block when current block changes
+    //Failing point
     const updatePrev = useCallback(() => {
+        console.log("current block is "+ values.id)
         console.log("updating previous blocks")
         values.prevBlock.forEach((pBlock) => {
             pBlock.setValues((vals) => {
@@ -75,7 +90,7 @@ const MusicBlock = ({ id, tool, setSelected, selected, saved = null, updateStart
                 return vals;
             })
         })
-    }, [values])
+    }, [values, values.start])
 
     //Adds current block to selected's nextBlocks
     const addNextBlock = () => {
@@ -99,24 +114,42 @@ const MusicBlock = ({ id, tool, setSelected, selected, saved = null, updateStart
     }
 
     const handlePathsTool = (target) => {
+
+        //Checks if block is previously in path, returns true or false
+        const checkPrev = (block) => {
+            //If we reach a starting block without find starting block id
+            if (block.values.start){
+                return false;
+            }
+            //If path reaches its own id the path is infinite
+            else if (block.values.id === values.id){
+                return true;
+            }
+            return block.values.prevBlock.some(checkPrev);
+        }
+
         if (selected.values !== null) {
             let startId = selected.values.id;
             let endId = target.id;
 
             //If not targeting self
             if (selected.values.id !== values.id) {
-                let found = selected.values.nextBlocks.findIndex((block) => block.id === values.id);
-                //If not found
-                if (found === -1) {
-                    addPath(startId, endId);
-                    addNextBlock();
-                    addPrev();
-                    updateSelected();
-                }
-                else {
-                    removePath(startId, endId);
-                    removePrev();
-                    removeNextBlock();
+                if (!selected.values.start || !values.start){
+                    let prev = checkPrev(selected);
+                    let self = selected.values.nextBlocks.some((block) => block.id === values.id);
+                    
+                    //If not found
+                    if ((self === false) && (prev === false)) {
+                        addPath(startId, endId);
+                        addNextBlock();
+                        addPrev();
+                        updateSelected();
+                    }
+                    else {
+                        removePath(startId, endId);
+                        removePrev();
+                        removeNextBlock();
+                    }
                 }
             }
         }
@@ -131,7 +164,6 @@ const MusicBlock = ({ id, tool, setSelected, selected, saved = null, updateStart
                 }
                 if (values.notes.length > 0){
                     return `\u{1D15F}x${values.notes.length}`
-                    
                 }
                 else {
                     return '\u{1D13D}'
@@ -147,8 +179,10 @@ const MusicBlock = ({ id, tool, setSelected, selected, saved = null, updateStart
     },[values, values.nextBlocks, updateStart])
 
     //Updates previous block on value change
+    // might be inifinite
     useEffect(()=>{
-        if ((values.prevBlock.length > 0) && !values.start) {
+        if ((values.prevBlock.length > 0)) {
+        //if ((values.prevBlock.length > 0) && !values.start) {
             updatePrev();
         }
     },[values, updatePrev])
@@ -205,8 +239,8 @@ const MusicBlock = ({ id, tool, setSelected, selected, saved = null, updateStart
     return (
         <>
             {values.created ?
-                <td ref={elRef} id={id} onClick={Action} onContextMenu={handleRightClick} className={classes}>{symbol}</td>
-                : <td ref={elRef} id={id} onClick={Action} onContextMenu={handleRightClick} className="MusicBlock">{symbol}</td>
+                <td id={id} onClick={Action} onContextMenu={handleRightClick} className={classes}>{symbol}</td>
+                : <td  id={id} onClick={Action} onContextMenu={handleRightClick} className="MusicBlock">{symbol}</td>
             }
 
         </>

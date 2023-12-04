@@ -32,7 +32,6 @@ const BlockDetail = ({ selected, samples, loading = true }) => {
     }
 
     const addNote = (evt) => {
-        evt.preventDefault();
         selected.setValues((values) => { 
             return { ...values, notes: [...values.notes, note] } 
         })
@@ -64,7 +63,7 @@ const BlockDetail = ({ selected, samples, loading = true }) => {
         <div className="BlockDetail">
             {selected.values !== null && selected.values.created ?
                 <>
-                    <Form>
+                    <div>
                         <FormGroup switch>
                             <Label>Starting Block</Label>
                             <Input checked={selected.values.start} type="switch" name="start" role="switch" onChange={handleSwitch}/>
@@ -78,9 +77,9 @@ const BlockDetail = ({ selected, samples, loading = true }) => {
                         <Label>Length (seconds): </Label>
                         <Input id="length" name="length" type="number" step={0.1} min={0} onChange={handleChange} value={selected.values.length} />
 
-                    </Form>
+                    </div>
 
-                    <Form>
+                    <div>
                         <FormGroup>
                             <Label>Notes:</Label>
                             <InputGroup>
@@ -92,7 +91,7 @@ const BlockDetail = ({ selected, samples, loading = true }) => {
                                 <Button key={uuid() + "btn-add"} color="success" className="addNote" onClick={addNote}>&#x2b;</Button>
                             </InputGroup>
                         </FormGroup>
-                    </Form>
+                    </div>
 
                     <NoteList notes={selected.values.notes} remove={removeNote} />
                     {/* <div><Label>Prev Block: {selected.values.prevBlock.toString()}</Label></div>

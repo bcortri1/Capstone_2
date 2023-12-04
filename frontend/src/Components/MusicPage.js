@@ -5,9 +5,11 @@ import MusicGrid from "./MusicGrid";
 import "./Styles/MusicPage.css"
 import DetailContainer from "./DetailContainer";
 import playBuffer from "../helpers/playBuffer";
+import {parse, stringify, toJSON, fromJSON} from 'flatted';
+import MusicProcApi from "../api";
 
 
-const MusicPage = ({ samples, loading }) => {
+const MusicPage = ({ samples, loading, setSave, username, save = {title: null, data: null} }) => {
     const initialState = {
         tool: "Add/Delete", //DEFAULT TOOL
         playing: false, // IS THE SONG CURRENTLY PLAYING
@@ -29,7 +31,7 @@ const MusicPage = ({ samples, loading }) => {
     const looping = useRef(false);
     const playArr = useRef([]);
     const timeOutArr = useRef([]);
-    console.log(startBlocks)
+    //console.log(startBlocks)
 
 
 
@@ -61,12 +63,12 @@ const MusicPage = ({ samples, loading }) => {
         else {
             looping.current = true;
         }
-        console.debug("Looping changed to:", looping.current)
+        //console.debug("Looping changed to:", looping.current)
     }
 
     //Toggles play state
-    const togglePlaying = async () => {
-        await Tone.start(); //needed for playback to begin
+    const togglePlaying = () => {
+        //await Tone.start(); //needed for playback to begin
         handleLoop();
         setPlaying((playing) => !playing);
     }
@@ -120,11 +122,9 @@ const MusicPage = ({ samples, loading }) => {
                     play.sync();
                     block.notes.forEach(note => {
                         let duration = block.length;
-                        let releaseTime = buffer.now + buffer.delay;
-                        play.triggerAttackRelease(note.pitch + note.octave, duration, releaseTime);
+                        let attackTime = buffer.now + buffer.delay;
+                        play.triggerAttackRelease(note.pitch + note.octave, duration, attackTime);
                     });
-                    console.debug("Synth Notes Played", { ...block.notes, length: block.length })
-                    console.debug("Synth Time", buffer.now);
                     buffer.add(play, Number(block.length));
                 }
                 getNextBlock(buffer, block.nextBlocks);
@@ -137,11 +137,9 @@ const MusicPage = ({ samples, loading }) => {
                 if (block.length > 0) {
                     let sample = samples.find((el) => el.name === block.sample);
                     let sampleNote = sample.pitch + sample.octave;
-                    let attackTime = buffer.now + buffer.delay;//Named wrong?
+                    let attackTime = buffer.now + buffer.delay;
                     let notes = block.notes.map(note => `${note.pitch}${note.octave}`)
                     let duration = block.length;
-                    console.debug("Sample Notes Played", { notes, length: block.length })
-                    console.debug("Sample Time", buffer.now + buffer.delay);
                     let play = new Tone.Sampler({
                         urls: {
                             [sampleNote]: sample.sound,
@@ -205,38 +203,39 @@ const MusicPage = ({ samples, loading }) => {
                     longest = buffer.delay;
                 }
             });
+            console.debug("Looping Longest:", longest)
             setTimeout(() => {
                 setPlaying(() => false)
             }, longest * 1000);
             let id = setTimeout(() => {
                 setPlaying(() => true)
-            }, (longest + .5) * 1000);
+            }, (longest + .5) * 1000); //Might shorten delay
             timeOutArr.current.push(id);
         }
 
-        if (playing) {
-            //PLAY MUSIC
+        const audioStart = async () => {
+            await Tone.start();
             let now = Tone.now();
-            Tone.start()
-            Tone.Transport.start();
+            await Tone.Transport.start(now,"+0.1");
             startBlocks.forEach((block) => {
                 let buffer = new playBuffer(now);
                 playArr.current.push(buffer);
                 playNoteType(buffer, block)
             })
+        }
 
+        if (playing) {
+            //PLAY MUSIC
+            audioStart();
         }
         else {
-            //STOP MUSIC, loops go for an extra loop
+            //STOP MUSIC
             stopBuffers();
             Tone.Transport.cancel(0);
         }
         //Ignoring warnings until refactor future date
         // eslint-disable-next-line
     }, [playing, samples, startBlocks])
-
-
-
 
     //Updates startblocks
     const updateStart = useCallback((block) => {
@@ -257,15 +256,27 @@ const MusicPage = ({ samples, loading }) => {
         }
     }, [])
 
-    const save = () => {
-        ///   let 
-    }
+        //Save current song and change current save
+        const handleSave = async () => {
+            let title =  prompt("Song Name: ", save.title || "");
+            console.debug("BEFORE", startBlocks)
+            let data = JSON.stringify(startBlocks)
+            console.debug("Save Func" , {title, username})
+            let res = await MusicProcApi.getSong(title, username)
+            if(!res){
+                await MusicProcApi.addSong(title, data, username);
+            }
+            else{
+                await MusicProcApi.updateSong(title, data, username);
+            }
+            setSave(() => ({title, data: startBlocks}));
+        }
 
     return (
         <div id="MusicPage">
             <audio id="AudioPlayer" />
-            <MusicGrid tool={tool} setSelected={setSelected} selected={selected} startBlocks={startBlocks} updateStart={updateStart} addPath={addPath} removePath={removePath} paths={paths} />
-            <DetailContainer selected={selected} setSelected={setSelected} samples={samples} loading={loading} setTool={setTool} tool={tool} togglePlaying={togglePlaying} playing={playing} />
+            <MusicGrid tool={tool} setSelected={setSelected} selected={selected} startBlocks={startBlocks} updateStart={updateStart} addPath={addPath} removePath={removePath} paths={paths} save={save} />
+            <DetailContainer selected={selected} setSelected={setSelected} samples={samples} loading={loading} setTool={setTool} tool={tool} togglePlaying={togglePlaying} playing={playing} saveSong = {handleSave} />
         </div>
     )
 }

@@ -38,6 +38,20 @@ function App() {
         localStorage.setItem('currUser', JSON.stringify(currUser));
     }, [currUser]);
 
+    //Adds or updates save in song list
+    useEffect(()=>{
+        let index = songs.findIndex((song) => song.title === save.title)
+        if (index === -1){
+            setSongs((arr)=>[...arr, JSON.stringify({...save, author: currUser})])
+        }
+        else {
+            setSongs((arr)=>{
+                arr[index] = {...save, author: currUser};
+                return arr;
+            })
+        }
+    },[save])
+
     useEffect(() => {
         localStorage.setItem('token', JSON.stringify(token));
         MusicProcApi.token = token;
@@ -46,8 +60,10 @@ function App() {
     //Initially gets all users songs
     useEffect(() => {
         async function getSongs() {
-            
             let songs = await MusicProcApi.getAllSongs(currUser);
+            songs.forEach((song, index) => {
+                songs[index].data = JSON.parse(songs[index].data)
+            })
             console.debug("Getting Songs", songs)
             setSongs(() => songs);
             setSongsLoading(() => false);
@@ -109,7 +125,7 @@ function App() {
         navigate("/");
     }
 
-    //const save
+
 
     return (
         <div className="App">
@@ -125,9 +141,9 @@ function App() {
                 {/* PROTECTED ROUTES */}
                 {((currUser !== null) && (token !== null)) ?
                     <>
-                        <Route path='/' element={<MusicPage samples={samples} loading={samplesLoading}/>} />
+                        <Route path='/' element={<MusicPage samples={samples} loading={samplesLoading} setSave={setSave} username={currUser} save={save}/>} />
                         <Route path='/samples' element={<SamplePage currUser={currUser} loading={samplesLoading} samples={samples} setSamples={setSamples} />} />
-                        <Route path='/songs' element={<SongList currUser={currUser} loading={songsLoading} songs={songs}/>} />
+                        <Route path='/songs' element={<SongList currUser={currUser} loading={songsLoading} songs={songs} setSongs={setSongs} setSave={setSave}/>} />
                         <Route path='/profile' element={<ProfileForm editUser={editUser} currUser={currUser} />} />
                     </>
                     : <Route path='/*' element={<Navigate to='/login' />} />}

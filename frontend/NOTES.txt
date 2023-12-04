@@ -1,9 +1,0 @@
-Current Known Bugs:
--Adding notes and paths too quickly while page loads leads to inconsistent issues with notes not being played
-
-
-Odd Design Behaviors (may decide to change later):
--Paths do not delete when blocks are deleted, leaving an empty block and path
--All paths loop when one path does
--Samples cannot be lengthened but can be shortened (limitation of Sample player, grain player would be required)
-

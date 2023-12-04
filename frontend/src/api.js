@@ -47,10 +47,7 @@ class MusicProcApi {
 
     //SONGS API
     static async getSong(title, username) {
-        let res = await this.request(`songs/${username}`,{
-            title,
-            username
-        }, "post");
+        let res = await this.request(`songs/${username}/${title}`);
         return res;
     }
 
@@ -63,7 +60,7 @@ class MusicProcApi {
         let res = await this.request(`songs/${username}`,{
             title,
             data,
-            username
+            author: username
         }, "post");
         return res;
     }
@@ -72,7 +69,7 @@ class MusicProcApi {
         let res = await this.request(`songs/${username}`,{
             title,
             data,
-            username
+            author: username
         }, "patch");
         return res;
     }

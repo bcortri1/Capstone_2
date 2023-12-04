@@ -1,14 +1,19 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Card, CardText, CardTitle, CardSubtitle, CardBody, Col, Row } from "reactstrap";
 import "./Styles/SongCard.css"
 
-const SongCard = ({ title, data, remove }) => {
+const SongCard = ({ title, data, remove, setSave }) => {
+    const navigate = useNavigate();
     const removeCard = async (evt) => {
         await remove(title);
     }
 
+    //Should add route to backend that only returns title for optimization
+    //Currently data is sent anyway
     const loadSong = () => {
-        //data in here?
+        setSave(()=>({title, data}));
+        navigate("/");
     }
 
     return (

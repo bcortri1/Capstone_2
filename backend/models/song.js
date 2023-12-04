@@ -4,12 +4,12 @@ const db = require("../db/db.js");
 class Song {
 
     //CREATE A SONG
-    static create({title, data, username}) {
+    static create(title, data, username) {
         const duplicateCheck = db.prepare(`
             SELECT title
             FROM songs
-            WHERE author = ?`
-        ).get(username);
+            WHERE title = ? AND author = ?`
+        ).get(title, username);
 
         if (duplicateCheck) {
             throw new Error("Duplicate Found")
@@ -25,12 +25,13 @@ class Song {
     }
 
     //GET SPECIFIED SONG
-    static get({title, username}) {
+    static get(title, username) {
         const song = db.prepare(`
             SELECT *
             FROM songs
             WHERE title = ? AND author = ?`
         ).get(title, username);
+        console.log(song)
         return song;
     }
 
@@ -45,12 +46,13 @@ class Song {
     }
 
     //UPDATE SPECIFIC SONG
-    static update({title, data, username}) {
+    static update(title, data, username) {
+       
         const song = db.prepare(`
             UPDATE songs
-            SET title = ?, data = ?, 
-            WHERE author = ?`
-        ).get(title, data, username);
+            SET data = ? 
+            WHERE title = ? AND author = ?`
+        ).run(data, title, username);
         return song;
     }
 

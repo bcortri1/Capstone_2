@@ -56,11 +56,11 @@ const insertTestData = (db) => {
         const insertSongs = db.transaction((songs) => {
             for (let song of songs) sql.run(song);
         })
-        insertSongs([{ title: "Title1", data: "[data1]", author: "TestUser1" },
-        { title: "Title2", data: "[data2]", author: "TestUser2" },
-        { title: "Title3", data: "[data3]", author: "TestUser3" },
-        { title: "Title4", data: "[data4]", author: "TestUser4" },
-        { title: "Title5", data: "[data5]", author: "TestUser4" },]);
+        insertSongs([{ title: "Title1", data: '[{"id":1}]', author: "TestUser1" },
+        { title: "Title2", data: '[{"id":2}]', author: "TestUser2" },
+        { title: "Title3", data: '[{"id":3}]', author: "TestUser3" },
+        { title: "Title4", data: '[{"id":4}]', author: "TestUser4" },
+        { title: "Title5", data: '[{"id":5}]', author: "TestUser4" },]);
     }
     {
         let sql = db.prepare(`INSERT INTO samples (name, sound, pitch, octave, user) VALUES(@name, @sound, @pitch, @octave, @user)`);
