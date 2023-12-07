@@ -7,6 +7,11 @@ Second step is to navigate to frontend folder type command *"npm run dev"*
 You can create an account or login via the follwing account used for testing:  
 Username: TestUser4  
 Password: 1234  
+
+**Music Page Controls**  
+Tools can be found near the top left of the Detail Container  
+Right Clicking a Music Block allows you to quick select a block  
+  
   
 **-INTRODUCTION-**  
 ======================================  
