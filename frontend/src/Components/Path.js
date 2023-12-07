@@ -3,9 +3,9 @@ import Xarrow from "react-xarrows";
 import "./Styles/Path.css";
 
 //Path between two music blocks
-const Path = ({ startId, endId, active }) => {
+const Path = ({ startId, endId}) => {
     return (
-        <Xarrow start={startId} end={endId}/>
+        <Xarrow start={startId} end={endId} path="grid"/>
     )
 }
 

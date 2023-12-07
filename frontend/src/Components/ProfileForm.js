@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Card, CardBody, CardTitle } from "reactstrap";
-import "./Styles/ProfileForm.css";
+import "./Styles/FormCard.css";
 
 const ProfileForm = ({ editUser, currUser }) => {
     const initialState = {password:"", username: currUser};
@@ -22,7 +22,7 @@ const ProfileForm = ({ editUser, currUser }) => {
     };
 
     return (
-        <div className="ProfileForm">
+        <div className="FormCard">
 
             <Card color="dark" inverse>
                 <CardTitle>Edit Info</CardTitle>

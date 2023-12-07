@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, CardText, CardTitle, CardSubtitle, CardBody, Col, Row } from "reactstrap";
+import { Button, Card, CardText, CardBody, Col, Row } from "reactstrap";
 import "./Styles/SongCard.css"
 
 const SongCard = ({ title, data, remove, setSave }) => {

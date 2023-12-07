@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Card, CardBody, CardTitle } from "reactstrap";
-import "./Styles/LoginForm.css";
+import "./Styles/FormCard.css";
 
 const LoginForm = ({ login }) => {
     const initialState = {
@@ -23,12 +23,13 @@ const LoginForm = ({ login }) => {
     };
 
     return (
-        <div className="LoginForm">
-            <Card>
+        <div className="FormCard">
+            <Card color="dark" inverse>
                 <CardTitle>Login</CardTitle>
                 <CardBody>
                     <Form id="login-form" onSubmit={handleSubmit}>
                         <Input
+                            className="bg-secondary text-white"
                             id="username"
                             name="username"
                             type="text"
@@ -38,6 +39,7 @@ const LoginForm = ({ login }) => {
                             required
                         />
                         <Input
+                            className="bg-secondary text-white"
                             id="password"
                             name="password"
                             type="password"
@@ -46,7 +48,7 @@ const LoginForm = ({ login }) => {
                             onChange={handleChange}
                             required
                         />
-                        <Button color="primary" id="login-btn">Log In</Button>
+                        <Button color="success" id="login-btn">Log In</Button>
                     </Form>
                 </CardBody>
             </Card>

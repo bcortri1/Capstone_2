@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import MusicProcApi from "../api";
 import SongCard from "./SongCard";
 import "./Styles/SongList.css"
@@ -8,6 +8,7 @@ const SongList = ({ setSongs, songs, loading=true, currUser, setSave }) => {
 
     const removeSong = async (title) => {
         MusicProcApi.deleteSong(title, currUser);
+        setSave(()=>({ title: null, data: null, author: currUser }));
         setSongs((songs)=>{
             return songs.filter((song)=> song.title !== title);
         })

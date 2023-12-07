@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Card, CardBody, CardTitle } from "reactstrap";
-import "./Styles/SignUpForm.css";
+import "./Styles/FormCard.css";
 
 const SignUpForm = ({ signup }) => {
     const initialState = {
@@ -23,8 +23,8 @@ const SignUpForm = ({ signup }) => {
     };
 
     return (
-        <div className="SignUpForm">
-            <Card>
+        <div className="FormCard">
+            <Card color="dark" inverse>
                 <CardTitle>Sign Up</CardTitle>
                 <CardBody>
                     <Form id="signup-form" onSubmit={handleSubmit}>
@@ -48,7 +48,7 @@ const SignUpForm = ({ signup }) => {
                             onChange={handleChange}
                             required
                         />
-                        <Button color="primary" id="signup-btn">Register</Button>
+                        <Button color="success" id="signup-btn">Register</Button>
                     </Form>
                 </CardBody>
             </Card>

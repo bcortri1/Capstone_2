@@ -1,29 +1,30 @@
-.ProfileForm {
+.FormCard {
     display: flex;
     justify-content: center;
     margin: 10%;
 }
 
-.ProfileForm input {
+.FormCard input {
     margin-top: 2px;
     margin-bottom: 2px;
     color: white !important;
+    
 }
 
-.ProfileForm input::placeholder {
+.FormCard input::placeholder {
     color: white;
 }
 
-.ProfileForm form {
+.FormCard form {
     margin: auto;
 }
 
-.ProfileForm .card-title {
+.FormCard .card-title {
     font-size: larger;
     font-weight: bold;
     text-align: center;
 }
 
-.ProfileForm button{
+.FormCard button{
     float: right;
 }

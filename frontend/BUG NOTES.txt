@@ -1,14 +1,13 @@
 ===========================================================
 Current Known Bugs:
--Looping notes for longer than 300~ seconds sees noticable crackling which does not go away(May be a limitation of the current implementation and/or library)
--Spam clicking play/pause causes non-appbreaking unpredictable behavior (unimportant)
+-Looping notes for longer than 300~ seconds sees noticable crackling which does not go away(May be a limitation of the library Tone JS)
 -Adding notes and paths too quickly while page loads leads to inconsistent issues with notes not being played (Could have interaction halt until loading is done)
+-Strict Mode causes duplicate Paths to appear during initial loading of save (expected but disabled for now)
 
-*While Frustrating none of these break are appbreaking*
+*None of these break are appbreaking aside from the Tone JS issue *
 
 ===========================================================
 Odd Design Behaviors (may decide to change later):
--Paths do not delete when blocks are deleted, leaving an empty block and path
 -All paths loop when one path does (could be redone with Tone JS Part to allow for invidual path looping, may solve crackling issue)
 -Samples cannot be lengthened but can be shortened (limitation of Sample player, Grain player would be required)
 

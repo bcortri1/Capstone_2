@@ -26,31 +26,34 @@ function App() {
     //AUTHORIZATION STATES
     const [currUser, setUser] = useState(initialState.currUser);
     const [token, setToken] = useState(initialState.token);
-    
+
     //SAMPLE STATES
     const [samples, setSamples] = useState(initialState.samples);
     const [samplesLoading, setSamplesLoading] = useState(initialState.samplesLoading);
     const [songs, setSongs] = useState(initialState.songs);
     const [songsLoading, setSongsLoading] = useState(initialState.songsLoading);
-    const [save, setSave] = useState()
+    const [save, setSave] = useState({ title: null, data: null, author: currUser })
 
     useEffect(() => {
         localStorage.setItem('currUser', JSON.stringify(currUser));
     }, [currUser]);
 
     //Adds or updates save in song list
-    useEffect(()=>{
-        let index = songs.findIndex((song) => song.title === save.title)
-        if (index === -1){
-            setSongs((arr)=>[...arr, JSON.stringify({...save, author: currUser})])
+    useEffect(() => {
+        console.log(save.title)
+        if (save.title !== null) {
+            let index = songs.findIndex((song) => song.title === save.title)
+            if (index === -1) {
+                setSongs((arr) => [...arr, { ...save, author: currUser }])
+            }
+            else {
+                setSongs((arr) => {
+                    arr[index] = { ...save, author: currUser };
+                    return arr;
+                })
+            }
         }
-        else {
-            setSongs((arr)=>{
-                arr[index] = {...save, author: currUser};
-                return arr;
-            })
-        }
-    },[save])
+    }, [save, currUser, songs])
 
     useEffect(() => {
         localStorage.setItem('token', JSON.stringify(token));
@@ -64,33 +67,39 @@ function App() {
             songs.forEach((song, index) => {
                 songs[index].data = JSON.parse(songs[index].data)
             })
+
             console.debug("Getting Songs", songs)
             setSongs(() => songs);
             setSongsLoading(() => false);
         }
-        if (initialState.songs.length === 0) {
-            getSongs();
+        if (currUser !== null){
+            if (initialState.songs.length === 0) {
+                getSongs();
+            }
+            else {
+                setSongsLoading(() => false);
+            } 
         }
-        else {
-            setSongsLoading(() => false);
-        }
-    }, [initialState.songs.length])
+
+    }, [initialState.songs.length, currUser])
 
     //Initially gets all users samples
     useEffect(() => {
         async function getSamples() {
             let samples = await MusicProcApi.getAllSamples(currUser);
-            let buffers = 1;
             setSamples(() => samples);
             setSamplesLoading(() => false);
         }
-        if (initialState.samples.length === 0) {
-            getSamples();
+        if (currUser !== null) {
+            if (initialState.samples.length === 0) {
+                getSamples();
+            }
+            else {
+                setSamplesLoading(() => false);
+            }
         }
-        else {
-            setSamplesLoading(() => false);
-        }
-    }, [initialState.samples.length])
+
+    }, [initialState.samples.length, currUser])
 
     //LOGIN
     const login = async (data) => {
@@ -105,6 +114,9 @@ function App() {
     const logout = async () => {
         setUser(() => null);
         setToken(() => null);
+        setSamples(()=>initialState.samples)
+        setSongs(()=>initialState.songs)
+        setSave(()=>({ title: null, data: null, author: null }))
     }
 
     //SIGNUP or REGISTER
@@ -141,9 +153,9 @@ function App() {
                 {/* PROTECTED ROUTES */}
                 {((currUser !== null) && (token !== null)) ?
                     <>
-                        <Route path='/' element={<MusicPage samples={samples} loading={samplesLoading} setSave={setSave} username={currUser} save={save}/>} />
+                        <Route path='/' element={<MusicPage samples={samples} loading={samplesLoading} setSave={setSave} username={currUser} save={save} />} />
                         <Route path='/samples' element={<SamplePage currUser={currUser} loading={samplesLoading} samples={samples} setSamples={setSamples} />} />
-                        <Route path='/songs' element={<SongList currUser={currUser} loading={songsLoading} songs={songs} setSongs={setSongs} setSave={setSave}/>} />
+                        <Route path='/songs' element={<SongList currUser={currUser} loading={songsLoading} songs={songs} setSongs={setSongs} setSave={setSave} />} />
                         <Route path='/profile' element={<ProfileForm editUser={editUser} currUser={currUser} />} />
                     </>
                     : <Route path='/*' element={<Navigate to='/login' />} />}

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Card, CardText, CardTitle, CardSubtitle, CardBody, Col, Row } from "reactstrap";
+import React from "react";
+import { Button, Card, CardText, CardBody, Col, Row } from "reactstrap";
 import "./Styles/SampleCard.css";
 
 const SampleCard = ({ name, sound, remove }) => {
