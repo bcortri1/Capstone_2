@@ -12,10 +12,11 @@ Username: TestUser4
 Password: 1234  
 
 **Music Page Controls**  
-Tools can be found near the top left of the Detail Container  
+Tools can be found near the top of the Detail Container  
 Right Clicking a Music Block allows you to quick select a block  
   
-  
+![Tool Description](https://github.com/bcortri1/Capstone_2/assets/111906552/74c5afba-f9e9-4388-97ce-67e186deefec)
+
 **-INTRODUCTION-**  
 ======================================  
 "Procedural Music Generation Tool (MusicProc)"  
