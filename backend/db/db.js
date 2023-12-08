@@ -37,6 +37,7 @@ const createSchema = (db) => {
     console.log("Tables created".green)
 }
 
+//Inserts Dummy Test Data
 const insertTestData = (db) => {
     {
         let sql = db.prepare(`INSERT INTO users (username, password, admin) VALUES(@username, @password, @admin)`);
