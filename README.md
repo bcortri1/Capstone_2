@@ -7,7 +7,7 @@
 First step is to navigate to *backend* and *frontend* folders run *"npm install"*  
 Second step is to navigate to frontend folder type command *"npm run dev"*  
   
-You can create an account or login via the follwing account used for testing:  
+You can create an account or login via the following account used for testing:  
 Username: TestUser4  
 Password: 1234  
 
